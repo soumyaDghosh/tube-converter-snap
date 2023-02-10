@@ -1,5 +1,5 @@
 # Tube Converter
-<img src="src/resources/org.nickvision.tubeconverter.svg" width="100" height="100"/>
+<img src="https://github.com/nlogozzo/NickvisionTubeConverter/raw/main/src/resources/org.nickvision.tubeconverter.svg" width="100" height="100"/>
 
 **An easy-to-use YouTube video downloader**
 
