@@ -114,7 +114,8 @@ parts:
     override-prime: |
       set -eux
       for snap in "gnome-42-2204" "gnome-42-2204-sdk" "core22"; do
-      cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \\;
+      cd "/snap/$snap/current" 
+      find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \\;
       done
       find $CRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
 apps:
