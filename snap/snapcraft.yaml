@@ -15,7 +15,7 @@ architectures:
   - amd64
   
 slots:
-  tube-converter:
+  dbus:
     interface: dbus
     bus: session
     name: org.nickvision.tubeconverter
