@@ -13,12 +13,6 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo 
 architectures:
   - amd64
-  
-slots:
-  dbus:
-    interface: dbus
-    bus: session
-    name: org.nickvision.tubeconverter
 
 environment:
   # WORKAROUND: Add python modules in Snap to search path
