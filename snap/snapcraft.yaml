@@ -120,7 +120,7 @@ apps:
     common-id: org.nickvision.tubeconverter
     environment:
       GTK_USE_PORTAL: 1
-      HOME: "$SNAP_USER_COMMON"
+      HOME: "$HOME"
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     plugs:
       - home
