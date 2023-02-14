@@ -125,3 +125,4 @@ apps:
     plugs:
       - home
       - network
+      - removable-media
