@@ -13,7 +13,12 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo 
 architectures:
   - amd64
-
+package-repositores:
+  - type: apt
+    components: [kinetic]
+    suites: [prebuilt-mpr]
+    key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
+    url: https://proget.makedeb.org
 environment:
   # WORKAROUND: Add python modules in Snap to search path
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
@@ -53,7 +58,11 @@ parts:
     source: https://github.com/yt-dlp/yt-dlp.git
     source-tag: 2023.01.06
     python-packages:
-      - pyxattr==0.7.2
+      - pyxattr
+      - mutagen
+      - pycryptodomex
+      - websockets
+      - 
     build-environment:
       # WORKAROUND: The python plugin is broken with gnome extension
       - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
@@ -78,24 +87,25 @@ parts:
     after: 
       - yt-dlp 
       - ffmpeg
-    plugin: meson
+    plugin: dotnet
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
     source-tag: ${SNAPCRAFT_PROJECT_VERSION}
     # See 'snapcraft plugins'
     meson-parameters: [--prefix=/snap/tube-converter/current/usr]
     build-packages:
-      - libjsoncpp-dev
-    stage-packages:
-      - libjsoncpp25      
+      - brotli
+      - blueprint-compiler
+      - just
+      - rustup
+    override-build: |
+      just build
     override-prime: |
       craftctl default
+      cd /root/parts/tube-converter/build
+      DESTDIR=/root/prime just install
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i usr/share/applications/org.nickvision.tubeconverter.desktop
-      sed -e '1c#!/usr/bin/env python3' -i "${CRAFT_PART_INSTALL}/usr/bin/org.nickvision.tubeconverter"
-    organize:
-      # WORKAROUND: Move files from fake installation location to actual target
-      snap/tube-converter/current/usr: usr
-      parse-info: usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml      
+    parse-info: usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml      
       
   cleanup:
     after:  # Make this part run last; list all your other parts here
@@ -120,7 +130,6 @@ apps:
     common-id: org.nickvision.tubeconverter
     environment:
       GTK_USE_PORTAL: 1
-      HOME: "$SNAP_REAL_HOME"
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     plugs:
       - home
