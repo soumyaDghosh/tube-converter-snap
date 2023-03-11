@@ -13,15 +13,15 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo 
 architectures:
   - amd64
+environment:
+  # WORKAROUND: Add python modules in Snap to search path
+  PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
 package-repositores:
   - type: apt
     components: [kinetic]
     suites: [prebuilt-mpr]
     key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
     url: https://proget.makedeb.org
-environment:
-  # WORKAROUND: Add python modules in Snap to search path
-  PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
 parts:
   ffmpeg:
     # WORKAROUND:
@@ -62,7 +62,6 @@ parts:
       - mutagen
       - pycryptodomex
       - websockets
-      - 
     build-environment:
       # WORKAROUND: The python plugin is broken with gnome extension
       - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
