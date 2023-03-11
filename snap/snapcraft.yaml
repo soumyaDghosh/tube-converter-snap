@@ -104,9 +104,8 @@ parts:
       craftctl default
       cd /root/parts/tube-converter/build
       DESTDIR=/root/prime just install
-      sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i usr/share/applications/org.nickvision.tubeconverter.desktop
-    parse-info: usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml      
-      
+      sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i usr/share/applications/org.nickvision.tubeconverter.desktop  
+         
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - tube-converter
