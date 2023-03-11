@@ -95,6 +95,7 @@ parts:
       - blueprint-compiler
       - just
       - rustup
+      - dotnet-sdk-6.0
     override-build: |
       just build
     override-prime: |
