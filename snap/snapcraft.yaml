@@ -86,7 +86,7 @@ parts:
     after: 
       - yt-dlp 
       - ffmpeg
-    plugin: dotnet
+    plugin: dump
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
     source-tag: ${SNAPCRAFT_PROJECT_VERSION}
