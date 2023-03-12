@@ -98,11 +98,13 @@ parts:
       - rustup
       - dotnet-sdk-6.0
     override-build: |
+      cd NickvisionTubeConverter.GNOME
       just build
     override-prime: |
       craftctl default
-      cd /root/parts/tube-converter/build
+      cd /root/parts/tube-converter/build/NickvisionTubeConverter.GNOME
       DESTDIR=/root/prime just install
+      cd
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i usr/share/applications/org.nickvision.tubeconverter.desktop  
          
   cleanup:
