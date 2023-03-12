@@ -98,6 +98,7 @@ parts:
       - rustup
       - dotnet-sdk-6.0
     override-build: |
+      cd NickvisionTubeConverter.GNOME
       just publish-self-contained /usr
     override-prime: |
       craftctl default
