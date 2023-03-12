@@ -90,6 +90,7 @@ parts:
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
     source-tag: ${SNAPCRAFT_PROJECT_VERSION}
+    source-subdir: NickvisionTubeConverter.GNOME
     build-packages:
       - brotli
       - blueprint-compiler
