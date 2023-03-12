@@ -97,10 +97,11 @@ parts:
       - just
       - rustup
       - dotnet-sdk-6.0
+    override-build: |
+      just publish-self-contained /usr
     override-prime: |
       craftctl default
-      cd NickvisionTubeConverter.GNOME
-      just publish-self-contained /usr
+      cd /root/parts/tube-converter/build/NickvisionTubeConverter.GNOME
       just install /root/prime/
       cd
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i usr/share/applications/org.nickvision.tubeconverter.desktop  
