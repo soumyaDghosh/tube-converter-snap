@@ -8,7 +8,7 @@ description: |
  * Run multiple downloads at a time
  * Supports downloading metadata and video subtitles
 
-grade: stable # must be 'stable' to release into candidate/stable channels
+grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo 
 architectures:
