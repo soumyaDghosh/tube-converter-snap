@@ -102,6 +102,8 @@ parts:
       - just
       - rustup
       - dotnet-sdk-7.0
+    stage-packages:
+      - dotnet-runtime-7.0
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
