@@ -103,6 +103,7 @@ parts:
       - rustup
       - dotnet-sdk-7.0
     stage-packages:
+      - dotnet-sdk-7.0
       - dotnet-runtime-7.0
     override-pull: |
       craftctl default
