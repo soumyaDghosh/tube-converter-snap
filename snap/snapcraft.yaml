@@ -10,13 +10,18 @@ description: |
 
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
-compression: lzo 
+compression: lzo
 architectures:
   - amd64
 environment:
   # WORKAROUND: Add python modules in Snap to search path
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
 package-repositories:
+  - type: apt
+    components: [main, multiverse, restricted, universe]
+    suites: [kinetic, kinetic-backports, kinetic-security, kinetic-updates]
+    key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
+    url: http://security.ubuntu.com/ubuntu
   - type: apt
     components: [kinetic]
     suites: [prebuilt-mpr]
@@ -67,6 +72,7 @@ parts:
       - mutagen
       - pycryptodomex
       - websockets
+      - PyGObject
     build-environment:
       # WORKAROUND: The python plugin is broken with gnome extension
       - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
@@ -88,49 +94,38 @@ parts:
       - -bin/pip3.10
       - -pyvenv.cfg
   tube-converter:
-    after: 
-      - yt-dlp 
+    after:
+      - yt-dlp
       - ffmpeg
     plugin: dump
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
-    source-tag: ${SNAPCRAFT_PROJECT_VERSION}
+    source-tag: snap
     source-subdir: NickvisionTubeConverter.GNOME
+    build-environment:
+      - TC_PYTHON_SO: "/snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0"
     build-packages:
       - brotli
       - blueprint-compiler
       - just
-      - rustup
       - dotnet-sdk-7.0
     stage-packages:
-      - dotnet-sdk-7.0
-      - dotnet-runtime-7.0
+      - libpython3.10
+      - python3
+      - libadwaita-1-0
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
+      #sed -e "s|process.StandardOutput.ReadToEnd().Trim()|/snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.0|" -i NickvisionTubeConverter.Shared/Helpers/DependencyManager.cs
     override-build: |
+      set +u; [ -n "$TC_PYTHON_SO" ] || (echo "Environment variable TC_PYTHON_SO is not set, aborting."; exit 1)
       cd NickvisionTubeConverter.GNOME
-      just publish-self-contained /usr
-    override-prime: |
-      craftctl default
-      cd /root/parts/tube-converter/build/NickvisionTubeConverter.GNOME
-      just install /root/prime/  
-         
-  cleanup:
-    after:  # Make this part run last; list all your other parts here
-      - tube-converter
-      - yt-dlp
-      - ffmpeg
-    plugin: nil
-    build-snaps:  # List all content-snaps and base snaps you're using here
-      - gnome-42-2204
-      - gnome-42-2204-sdk
-      - core22
-    override-prime: |
-      set -eux
-      for snap in "core22" "gnome-42-2204" "gnome-42-2204-sdk"; do  # List all content-snaps and base snaps you're using here
-        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
-      done
+      just publish-self-contained /snap/tube-converter/current/usr
+      just install /root/prime
+      sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" /root/prime/usr/bin/org.nickvision.tubeconverter
+      #sed -e "s|exec /usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|exec /snap/tube-converter/current/usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|" -i /root/prime/usr/bin/org.nickvision.tubeconverter
+    organize:
+      snap/tube-converter/current/usr: usr
 apps:
   tube-converter:
     command: usr/bin/org.nickvision.tubeconverter
@@ -139,6 +134,7 @@ apps:
     common-id: org.nickvision.tubeconverter
     environment:
       GTK_USE_PORTAL: 1
+      TC_PYTHON_SO: /snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     plugs:
       - home
