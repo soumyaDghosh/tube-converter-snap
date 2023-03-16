@@ -110,6 +110,7 @@ parts:
       - just
       - dotnet-sdk-7.0
     stage-packages:
+      - dotnet-sdk-7.0
       - libpython3.10
       - python3
       - libadwaita-1-0
