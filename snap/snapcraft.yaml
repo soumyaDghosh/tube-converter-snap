@@ -13,33 +13,81 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo
 architectures:
   - amd64
+plugs:
+  usr-share-zoneinfo:
+    interface: system-files
+    read:
+      - /usr/share/zoneinfo-icu/44/le/timezoneTypes.res
 environment:
   # WORKAROUND: Add python modules in Snap to search path
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
 package-repositories:
   - type: apt
-    components: [main, multiverse, restricted, universe]
-    suites: [kinetic, kinetic-backports, kinetic-security, kinetic-updates]
-    key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
-    url: http://security.ubuntu.com/ubuntu
+    url: https://packages.microsoft.com/ubuntu/22.04/prod
+    components: [main]
+    suites: [jammy]
+    key-id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
   - type: apt
     components: [kinetic]
     suites: [prebuilt-mpr]
     key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
     url: https://proget.makedeb.org
-  - type: apt
-    url: https://packages.microsoft.com/ubuntu/22.04/prod
-    components: [main]
-    suites: [jammy]
-    key-id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
 parts:
+  libadwaita:
+    source: https://gitlab.gnome.org/GNOME/libadwaita.git
+    source-tag: '1.2.3'
+    after: [ yt-dlp ]
+    plugin: meson
+    meson-parameters:
+      - --prefix=/usr
+      - -Doptimization=3
+      - -Ddebug=true
+      - -Dintrospection=enabled
+      - -Dvapi=true
+      - -Dtests=false
+      - -Dexamples=false
+    build-packages:
+      - sassc
+    override-pull: |
+      craftctl default
+      sed -e 's/-W\(format-nonliteral\)\b/-Wno-\1/g' -i meson.build
+      patch -p1 < $CRAFT_PROJECT_DIR/patches/style-manager-Support-Yaru-accent-colors.patch
+  yt-dlp:
+    # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
+    plugin: python
+    source: https://github.com/yt-dlp/yt-dlp.git
+    source-tag: 2023.03.04
+    python-packages:
+      - pyxattr==0.7.2
+      - PyGObject
+    build-environment:
+      # WORKAROUND: The python plugin is broken with gnome extension
+      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
+      - PYTHONPATH: ""
+    override-pull: |
+      craftctl default
+      sed -i 's/^certifi\b/#\0/' requirements.txt
+    stage:
+      # WORKAROUND: Skip venv from python plugin
+      - -bin/activate
+      - -bin/activate.csh
+      - -bin/activate.fish
+      - -bin/Activate.ps1
+      - -bin/python
+      - -bin/python3
+      - -bin/python3.10
+      - -bin/pip
+      - -bin/pip3
+      - -bin/pip3.10
+      - -pyvenv.cfg
   ffmpeg:
+    after: [ yt-dlp, libadwaita ]
     # WORKAROUND:
     # Build from source because the ffmpeg package installs libraries as dependencies
     # that conflict with the Gnome extension
     plugin: autotools
-    source: https://ffmpeg.org/releases/ffmpeg-5.1.2.tar.xz
-    source-checksum: sha256/619e706d662c8420859832ddc259cd4d4096a48a2ce1eefd052db9e440eef3dc
+    source: https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz
+    source-checksum: sha256/57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082
     autotools-configure-parameters:
       # WORKAROUND: Install to /usr instead of /usr/local because it's not in search paths
       - --prefix=/usr
@@ -62,41 +110,8 @@ parts:
       - libmp3lame0
     stage:
       - -usr/include
-  yt-dlp:
-    after: [ffmpeg]
-    plugin: python
-    source: https://github.com/yt-dlp/yt-dlp.git
-    source-tag: 2023.01.06
-    python-packages:
-      - pyxattr
-      - mutagen
-      - pycryptodomex
-      - websockets
-      - PyGObject
-    build-environment:
-      # WORKAROUND: The python plugin is broken with gnome extension
-      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
-      - PYTHONPATH: ""
-    override-pull: |
-      craftctl default
-      sed -i 's/^certifi\\b/#\\0/' requirements.txt
-    stage:
-      # WORKAROUND: Skip venv from python plugin
-      - -bin/activate
-      - -bin/activate.csh
-      - -bin/activate.fish
-      - -bin/Activate.ps1
-      - -bin/python
-      - -bin/python3
-      - -bin/python3.10
-      - -bin/pip
-      - -bin/pip3
-      - -bin/pip3.10
-      - -pyvenv.cfg
   tube-converter:
-    after:
-      - yt-dlp
-      - ffmpeg
+    after: [ ffmpeg, yt-dlp, libadwaita ]
     plugin: dump
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
@@ -110,23 +125,23 @@ parts:
       - just
       - dotnet-sdk-7.0
     stage-packages:
-      - dotnet-sdk-7.0
+      - python3
+      - yt-dlp
+      - python3-pip
       - libpython3.10
       - python3
-      - libadwaita-1-0
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
-      #sed -e "s|process.StandardOutput.ReadToEnd().Trim()|/snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.0|" -i NickvisionTubeConverter.Shared/Helpers/DependencyManager.cs
-    override-build: |
-      set +u; [ -n "$TC_PYTHON_SO" ] || (echo "Environment variable TC_PYTHON_SO is not set, aborting."; exit 1)
-      cd NickvisionTubeConverter.GNOME
-      just publish-self-contained /snap/tube-converter/current/usr
+    override-prime: |
+      craftctl default
+      cd ~/parts/tube-converter/src/NickvisionTubeConverter.GNOME
+      just publish-self-contained /usr
       just install /root/prime
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" /root/prime/usr/bin/org.nickvision.tubeconverter
-      #sed -e "s|exec /usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|exec /snap/tube-converter/current/usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|" -i /root/prime/usr/bin/org.nickvision.tubeconverter
-    organize:
-      snap/tube-converter/current/usr: usr
+      sed -i "s|exec /usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|exec /snap/tube-converter/current/usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|" /root/prime/usr/bin/org.nickvision.tubeconverter
+      sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" /root/prime/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
+    parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
 apps:
   tube-converter:
     command: usr/bin/org.nickvision.tubeconverter
@@ -134,10 +149,10 @@ apps:
       - gnome
     common-id: org.nickvision.tubeconverter
     environment:
-      GTK_USE_PORTAL: 1
       TC_PYTHON_SO: /snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     plugs:
       - home
       - network
+      - network-status
       - removable-media
