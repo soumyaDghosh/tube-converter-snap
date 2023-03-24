@@ -13,11 +13,11 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo
 architectures:
   - amd64
-plugs:
-  usr-share-zoneinfo:
-    interface: system-files
-    read:
-      - /usr/share/zoneinfo-icu/44/le/timezoneTypes.res
+#plugs:
+#  usr-share-zoneinfo:
+#    interface: system-files
+#    read:
+#      - /usr/share/zoneinfo-icu/44/le/timezoneTypes.res
 environment:
   # WORKAROUND: Add python modules in Snap to search path
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
