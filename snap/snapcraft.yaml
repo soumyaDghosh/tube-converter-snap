@@ -129,7 +129,7 @@ parts:
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
     override-prime: |
       craftctl default
-      cd ~/parts/tube-converter/build
+      cd ~/parts/tube-converter/build/NickvisionTubeConverter.GNOME
       just publish-self-contained /usr
       just install /root/prime
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" /root/prime/usr/bin/org.nickvision.tubeconverter
