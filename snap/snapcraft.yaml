@@ -124,12 +124,6 @@ parts:
       - blueprint-compiler
       - just
       - dotnet-sdk-7.0
-    stage-packages:
-      - python3
-      - yt-dlp
-      - python3-pip
-      - libpython3.10
-      - python3
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
