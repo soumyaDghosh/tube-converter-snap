@@ -135,6 +135,8 @@ parts:
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" /root/prime/usr/bin/org.nickvision.tubeconverter
       sed -i "s|exec /usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|exec /snap/tube-converter/current/usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|" /root/prime/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" /root/prime/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
+    stage:
+      - -usr
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
 apps:
   tube-converter:
