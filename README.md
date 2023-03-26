@@ -19,12 +19,12 @@ The authors of Nickvision Tube Converter are not responsible/liable for any misu
 <a href='https://matrix.to/#/#nickvision:matrix.org'><img width='140' alt='Join our room' src='https://user-images.githubusercontent.com/17648453/196094077-c896527d-af6d-4b43-a5d8-e34a00ffd8f6.png'/></a>
 
 # Screenshots
-![MainWindow](https://user-images.githubusercontent.com/17648453/194887430-b934194b-ad9f-4b42-a3e1-ef3b6a17aab4.png)
-![AddDownloadDialog](https://user-images.githubusercontent.com/17648453/196213073-a321c459-96b3-4f11-a5e9-7352c4d7b6c4.png)
-![Downloading](https://user-images.githubusercontent.com/17648453/196213082-e9b2bb79-a276-425f-9d3c-f93a8203e703.png)
-![Done](https://user-images.githubusercontent.com/17648453/196213096-0522cf8e-41b4-4043-a1f7-8c0acd0c0e1d.png)
-![DarkMode](https://user-images.githubusercontent.com/17648453/196213105-fe26ca19-cf68-40c3-87aa-e7d71a86c4ba.png)
-![Logs](https://camo.githubusercontent.com/0d1b620a9cb25dc9e94c7c26a6d9d4647c9cc42647b6dafdf96c95f62f3ded9d/68747470733a2f2f692e696d6775722e636f6d2f304532753861622e706e67)
+![MainWindow](https://github.com/soumyaDghosh/tube-converter-snap/raw/main/Screenshots/Screenshot%20from%202023-03-27%2000-17-20.png)
+![AddDownloadDialog](https://github.com/soumyaDghosh/tube-converter-snap/raw/main/Screenshots/Screenshot%20from%202023-03-27%2000-20-53.png)
+![Downloading](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-21-00.png)
+![Done](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-21-14.png)
+![LightMode](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-17-30.png)
+![AboutPage](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-17-54.png)
 
 # Translating
 Everyone is welcome to translate this app into their native or known languages, so that the application is accessible to everyone.
