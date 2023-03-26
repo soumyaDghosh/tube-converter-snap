@@ -1,4 +1,4 @@
-\# Tube Converter
+# Tube Converter
 <img src="https://github.com/nlogozzo/NickvisionTubeConverter/raw/main/NickvisionTubeConverter.Shared/Resources/org.nickvision.tubeconverter.png" width="100" height="100"/>
 
 **An easy-to-use YouTube video downloader**
