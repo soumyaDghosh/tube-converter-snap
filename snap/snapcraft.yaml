@@ -126,20 +126,28 @@ parts:
       - blueprint-compiler
       - just
       - dotnet-sdk-7.0
+    stage-packages:
+      - python3
+      - libpython3.10
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
     override-prime: |
       craftctl default
-      cd ~/parts/
-      ls
+      cd ~/parts/tube-converter/src/NickvisionTubeConverter.GNOME
       just publish-self-contained /usr
       just install /root/prime
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" /root/prime/usr/bin/org.nickvision.tubeconverter
       sed -i "s|exec /usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|exec /snap/tube-converter/current/usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|" /root/prime/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" /root/prime/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
-    stage:
-      - -usr
+      cd
+      rm -rf Resources
+      rm -rf Blueprints
+      rm -rf Controls
+      rm -rf Views
+      rm -rf Resources
+      rm -rf Screenshots
+      rm -rf Helpers
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
 apps:
   tube-converter:
