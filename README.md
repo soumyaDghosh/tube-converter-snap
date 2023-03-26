@@ -1,4 +1,4 @@
-# Tube Converter
+\# Tube Converter
 <img src="https://github.com/nlogozzo/NickvisionTubeConverter/raw/main/NickvisionTubeConverter.Shared/Resources/org.nickvision.tubeconverter.png" width="100" height="100"/>
 
 **An easy-to-use YouTube video downloader**
@@ -85,10 +85,14 @@ meson compile org.nickvision.tubeconverter-update-po
 ```
 
 # Dependencies
-- [C++20](https://en.cppreference.com/w/cpp/20)
-- [GTK 4](https://www.gtk.org/)
-- [libadwaita](https://gnome.pages.gitlab.gnome.org/libadwaita/)
-- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
+- [.NET 7](https://dotnet.microsoft.com/en-us/)
+- [ffmpeg (GNOME)](https://ffmpeg.org/)
+- [python (GNOME)](https://python.org/)
+- [yt-dlp as python module (GNOME)](https://github.com/yt-dlp/yt-dlp)
 
 # Special Thanks
 - [daudix-UFO](https://github.com/daudix-UFO) and [martin-desktops](https://github.com/martin-desktops) for our application icons
+
+# Code of Conduct
+This project follows the [GNOME Code of Conduct](https://wiki.gnome.org/Foundation/CodeOfConduct).
+
