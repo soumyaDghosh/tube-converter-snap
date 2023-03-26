@@ -23,7 +23,7 @@ The authors of Nickvision Tube Converter are not responsible/liable for any misu
 ![AddDownloadDialog](https://github.com/soumyaDghosh/tube-converter-snap/raw/main/Screenshots/Screenshot%20from%202023-03-27%2000-20-53.png)
 ![Downloading](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-21-00.png)
 ![Done](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-21-14.png)
-![LightMode](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-17-30.png)
+![LightMode](https://github.com/soumyaDghosh/tube-converter-snap/raw/main/Screenshots/Screenshot%20from%202023-03-27%2000-17-34.png)
 ![AboutPage](https://raw.githubusercontent.com/soumyaDghosh/tube-converter-snap/main/Screenshots/Screenshot%20from%202023-03-27%2000-17-54.png)
 
 # Translating
