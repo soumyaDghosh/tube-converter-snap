@@ -11,6 +11,8 @@ description: |
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo
+assumes:
+  - snapd2.58
 architectures:
   - amd64
 #plugs:
