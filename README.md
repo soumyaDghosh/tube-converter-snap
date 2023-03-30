@@ -1,3 +1,9 @@
+<a href="https://snapcraft.io/tube-converter">
+  <img alt="tube-converter" src="https://snapcraft.io/tube-converter/badge.svg" />
+</a>
+<a href="https://snapcraft.io/tube-converter">
+  <img alt="tube-converter" src="https://snapcraft.io/tube-converter/trending.svg?name=0" />
+</a>
 # Tube Converter
 <img src="https://github.com/nlogozzo/NickvisionTubeConverter/raw/main/NickvisionTubeConverter.Shared/Resources/org.nickvision.tubeconverter.png" width="100" height="100"/>
 
@@ -9,6 +15,7 @@
 - Run multiple downloads at a time
 - Supports downloading metadata and video subtitles
 
+### This repo contains the snap for the project Tube-Converter
 # Disclaimer
 The authors of Nickvision Tube Converter are not responsible/liable for any misuse of this program that may violate local copyright/DMCA laws. Users use this application at their own risk.
 
