@@ -38,7 +38,6 @@ parts:
   libadwaita:
     source: https://gitlab.gnome.org/GNOME/libadwaita.git
     source-tag: '1.2.3'
-    after: [ yt-dlp ]
     plugin: meson
     meson-parameters:
       - --prefix=/usr
