@@ -15,11 +15,11 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: snapcore/action-build@v1
-        id: build
+        id: snapcraft-build
 
       - uses: diddlesnaps/snapcraft-review-action@v1
         with:
-          snap: ${{ steps.build.outputs.snap }}
+          snap: ${{ steps.snapcraft-build.outputs.snap }}
           isClassic: 'false'
           # Plugs and Slots declarations to override default denial (requires store assertion to publish)
           # plugs: ./plug-declaration.json
@@ -28,5 +28,5 @@ jobs:
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
         with:
-          snap: ${{ steps.build.outputs.snap }}
+          snap: ${{ steps.snapcraft-build.outputs.snap }}
           release: ${{ startsWith(github.ref, 'refs/tags/') && 'candidate' || 'edge'}}
