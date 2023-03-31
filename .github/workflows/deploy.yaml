@@ -1,0 +1,28 @@
+name: Deploy Tube-Converter
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '**'
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  deploy-snap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v3
+      - name: Build Tube-Converter Snap
+        uses: snapcore/action-build@v1
+        id: snapcraft-build
+        with:
+          snapcraft-args: "-v"
+      - name: Upload and release tube-converter Snap
+        uses: snapcore/action-publish@v1
+        env: 
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
+        with:
+          snap: ${{ steps.snapcraft-build.outputs.snap }}
+          release: stable
