@@ -117,7 +117,7 @@ parts:
     plugin: dump
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
-    source-tag: V$SNAPCRAFT_PROJECT_VERSION
+    source-tag: 2023.3.1
     source-subdir: NickvisionTubeConverter.GNOME
     build-environment:
       - TC_PYTHON_SO: "/snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0"
