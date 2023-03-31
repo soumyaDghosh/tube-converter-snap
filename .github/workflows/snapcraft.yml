@@ -1,0 +1,23 @@
+name: build-snap
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: snapcore/action-build@v1
+      id: build
+    - run: |
+        # check snap with review-tools
+        sudo snap install review-tools
+        sudo snap install yq
+        review-tools.store-query --snap-decl amberol | yq --output-format json .slots > slots.json
+        review-tools.snap-review --slots slots.json ${{ steps.build.outputs.snap }}
+    - uses: actions/upload-artifact@v3
+      with:
+        name: snap
+        path: ${{ steps.build.outputs.snap }}
