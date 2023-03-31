@@ -25,4 +25,4 @@ jobs:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
         with:
           snap: ${{ steps.snapcraft-build.outputs.snap }}
-          release: stable
+          release: ${{ startsWith(github.ref, 'refs/tags/') && 'candidate' || 'edge'}}
