@@ -117,7 +117,7 @@ parts:
       - TC_PYTHON_SO: "/snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0"
     build-packages:
       - brotli
-      - blueprint-compiler
+      - blueprint-compileraml
       - just
       - dotnet-sdk-7.0
     stage-packages:
@@ -135,21 +135,6 @@ parts:
       sed -i "s|exec /usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|exec /snap/tube-converter/current/usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|" /root/prime/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" /root/prime/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
-  cleanup:
-    after:  # Make this part run last; list all your other parts here
-      - tube-converter
-      - llibadwaita
-      - yt-dlp
-      - ffmpeg
-    plugin: nil
-    build-snaps:  # List all content-snaps and base snaps you're using here
-      - core22
-      - gnome-42-2204
-    override-prime: |
-      set -eux
-      for snap in "core22" "gnome-42-2204"; do  # List all content-snaps and base snaps you're using here
-          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
-      done
 apps:
   tube-converter:
     command: usr/bin/org.nickvision.tubeconverter
