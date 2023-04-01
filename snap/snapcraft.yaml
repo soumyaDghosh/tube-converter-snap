@@ -117,7 +117,7 @@ parts:
       - TC_PYTHON_SO: "/snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0"
     build-packages:
       - brotli
-      - blueprint-compileraml
+      - blueprint-compiler
       - just
       - dotnet-sdk-7.0
     stage-packages:
