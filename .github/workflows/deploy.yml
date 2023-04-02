@@ -22,7 +22,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
         name: snap
-        path: ${{ steps.build.outputs.snap }}    
+        path: ${{ steps.snapcraft-build.outputs.snap }}    
       - name: Upload and release tube-converter Snap
         uses: snapcore/action-publish@v1
         env: 
