@@ -129,6 +129,7 @@ parts:
     stage-packages:
       - python3
       - libpython3.10
+      - libnotify-bin
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
