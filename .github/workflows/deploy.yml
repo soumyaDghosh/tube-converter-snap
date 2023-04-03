@@ -25,7 +25,7 @@ jobs:
           path: ${{ steps.snapcraft-build.outputs.snap }}    
       - uses: diddlesnaps/snapcraft-review-action@v1
         with:
-          path: ${{ steps.snapcraft-build.outputs.snap }}
+          snap: ${{ steps.snapcraft-build.outputs.snap }}
           isClassic: 'false'          
       #- name: Upload and release tube-converter Snap
       #  uses: snapcore/action-publish@v1
