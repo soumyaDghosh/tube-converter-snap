@@ -23,7 +23,9 @@ architectures:
 
 layout:
   /usr/lib/org.nickvision.tubeconverter:
-    bind: $SNAP/usr/lib/org.nickvision.tubeconverter
+    symlink: $SNAP/usr/lib/org.nickvision.tubeconverter
+  /usr/share/org.nickvision.tubeconverter:
+    symlink: $SNAP/usr/share/org.nickvision.tubeconverter
 
 environment:
   # WORKAROUND: Add python modules in Snap to search path
