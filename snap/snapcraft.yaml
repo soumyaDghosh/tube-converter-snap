@@ -37,7 +37,7 @@ package-repositories:
     suites: [jammy]
     key-id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
   - type: apt
-    components: [kinetic]
+    components: [jammy]
     suites: [prebuilt-mpr]
     key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
     url: https://proget.makedeb.org
