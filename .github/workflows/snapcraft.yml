@@ -3,9 +3,9 @@ name: 🧪 Test snap can be built on x86_64
 on:
   push:
     branches:
-      - main
+      - 2023.4.0
   pull_request:
-    branches: [ main ]
+    branches: [ 2023.4.0 ]
 
 jobs:
   build:
@@ -24,9 +24,4 @@ jobs:
           # Plugs and Slots declarations to override default denial (requires store assertion to publish)
           # plugs: ./plug-declaration.json
           # slots: ./slot-declaration.json
-      - uses: snapcore/action-publish@v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-        with:
-          snap: ${{ steps.snapcraft-build.outputs.snap }}
-          release: ${{ startsWith(github.ref, 'refs/tags/') && 'candidate' || 'edge'}}
+      
