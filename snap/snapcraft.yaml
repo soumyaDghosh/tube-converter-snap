@@ -20,6 +20,13 @@ architectures:
 #    interface: system-files
 #    read:
 #      - /usr/share/zoneinfo-icu/44/le/timezoneTypes.res
+
+layout:
+  /usr/lib/org.nickvision.tubeconverter:
+    symlink: $SNAP/usr/lib/org.nickvision.tubeconverter
+  /usr/share/org.nickvision.tubeconverter:
+    symlink: $SNAP/usr/share/org.nickvision.tubeconverter
+
 environment:
   # WORKAROUND: Add python modules in Snap to search path
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
@@ -129,7 +136,6 @@ parts:
     stage-packages:
       - python3
       - libpython3.10
-      - libnotify-bin
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
@@ -138,16 +144,16 @@ parts:
       cd ~/parts/tube-converter/src/NickvisionTubeConverter.GNOME
       just publish-self-contained /usr
       just install /root/prime
-      sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" /root/prime/usr/bin/org.nickvision.tubeconverter
-      sed -i "s|exec /usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|exec /snap/tube-converter/current/usr/lib/org.nickvision.tubeconverter/NickvisionTubeConverter.GNOME|" /root/prime/usr/bin/org.nickvision.tubeconverter
-      sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" /root/prime/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
+      sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" $CRAFT_PRIME/usr/bin/org.nickvision.tubeconverter
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
-plugs:
+
+slots:
   # for GtkApplication registration
-  tube-converter-svc:
+  tube-converter:
     interface: dbus
     bus: session
     name: org.nickvision.tubeconverter    
+
 apps:
   tube-converter:
     command: usr/bin/org.nickvision.tubeconverter
