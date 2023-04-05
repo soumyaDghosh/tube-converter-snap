@@ -140,6 +140,7 @@ parts:
       just publish-self-contained /usr
       just install /root/prime
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" $CRAFT_PRIME/usr/bin/org.nickvision.tubeconverter
+      sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" $CRAFT_PRIME/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
 
 slots:
