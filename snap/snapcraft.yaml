@@ -162,7 +162,7 @@ apps:
     common-id: org.nickvision.tubeconverter
     environment:
       TC_PYTHON_SO: /snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0
-      GTK_USE_PORTAL: '1'
+      GNOTIFICATION_BACKEND: freedesktop
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     plugs:
       - home
