@@ -55,6 +55,8 @@ parts:
       craftctl default
       sed -e 's/-W\(format-nonliteral\)\b/-Wno-\1/g' -i meson.build
       patch -p1 < $CRAFT_PROJECT_DIR/patches/style-manager-Support-Yaru-accent-colors.patch
+    prime:
+      - usr/include
   yt-dlp:
     after: [libadwaita]
     # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
@@ -71,7 +73,7 @@ parts:
     override-pull: |
       craftctl default
       sed -i 's/^certifi\b/#\0/' requirements.txt
-    stage:
+    prime:
       # WORKAROUND: Skip venv from python plugin
       - -bin/activate
       - -bin/activate.csh
@@ -112,7 +114,7 @@ parts:
       - libvorbis-dev
     stage-packages:
       - libmp3lame0
-    stage:
+    prime:
       - -usr/include
   tube-converter:
     after: [ ffmpeg, yt-dlp, libadwaita ]
@@ -141,6 +143,8 @@ parts:
       just install /root/prime
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" $CRAFT_PRIME/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" $CRAFT_PRIME/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
+    prime:
+      - usr/
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
 
 slots:
