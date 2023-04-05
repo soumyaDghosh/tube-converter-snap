@@ -144,7 +144,9 @@ parts:
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" $CRAFT_PRIME/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" $CRAFT_PRIME/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
     prime:
-      - usr/
+      - usr/lib/org.nickvision.tubeconverter/*
+      - usr/bin/org.nickvision.tubeconverter
+      - usr/share/*
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
 
 slots:
