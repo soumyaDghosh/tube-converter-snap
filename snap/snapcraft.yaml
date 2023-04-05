@@ -15,11 +15,6 @@ assumes:
   - snapd2.58
 architectures:
   - amd64
-#plugs:
-#  usr-share-zoneinfo:
-#    interface: system-files
-#    read:
-#      - /usr/share/zoneinfo-icu/44/le/timezoneTypes.res
 
 layout:
   /usr/lib/org.nickvision.tubeconverter:
@@ -162,7 +157,7 @@ apps:
     common-id: org.nickvision.tubeconverter
     environment:
       TC_PYTHON_SO: /snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0
-      GNOTIFICATION_BACKEND: freedesktop
+      GNOTIFICATION_BACKEND: freedesktop #This is to fix notifications
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     plugs:
       - home
