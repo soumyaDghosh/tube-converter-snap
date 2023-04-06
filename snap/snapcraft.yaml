@@ -15,6 +15,7 @@ assumes:
   - snapd2.58
 architectures:
   - amd64
+  - aarch64
 
 layout:
   /usr/lib/org.nickvision.tubeconverter:
