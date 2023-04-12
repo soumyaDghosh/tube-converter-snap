@@ -158,10 +158,9 @@ apps:
     common-id: org.nickvision.tubeconverter
     environment:
       TC_PYTHON_SO: /snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0
-      GNOTIFICATION_BACKEND: freedesktop #This is to fix notifications
+#      GNOTIFICATION_BACKEND: freedesktop #This is to fix notifications
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     plugs:
-      - home
       - network
       - network-status
       - removable-media
