@@ -34,34 +34,34 @@ package-repositories:
     key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
     url: https://proget.makedeb.org
 parts:
-  yt-dlp:
-    # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
-    plugin: python
-    source: https://github.com/yt-dlp/yt-dlp.git
-    source-tag: 2023.03.04
-    python-packages:
-      - pyxattr==0.7.2
-      - PyGObject
-    build-environment:
-      # WORKAROUND: The python plugin is broken with gnome extension
-      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
-      - PYTHONPATH: ""
-    override-pull: |
-      craftctl default
-      sed -i 's/^certifi\b/#\0/' requirements.txt
-    stage:
-      # WORKAROUND: Skip venv from python plugin
-      - -bin/activate
-      - -bin/activate.csh
-      - -bin/activate.fish
-      - -bin/Activate.ps1
-      - -bin/python
-      - -bin/python3
-      - -bin/python3.10
-      - -bin/pip
-      - -bin/pip3
-      - -bin/pip3.10
-      - -pyvenv.cfg
+  #yt-dlp:
+  #  # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
+  #  plugin: python
+  #  source: https://github.com/yt-dlp/yt-dlp.git
+  #  source-tag: 2023.03.04
+  #  python-packages:
+  #    - pyxattr==0.7.2
+  #    - PyGObject
+  #  build-environment:
+  #    # WORKAROUND: The python plugin is broken with gnome extension
+  #    - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
+  #    - PYTHONPATH: ""
+  #  override-pull: |
+  #    craftctl default
+  #    sed -i 's/^certifi\b/#\0/' requirements.txt
+  #  stage:
+  #    # WORKAROUND: Skip venv from python plugin
+  #    - -bin/activate
+  #    - -bin/activate.csh
+  #    - -bin/activate.fish
+  #    - -bin/Activate.ps1
+  #    - -bin/python
+  #    - -bin/python3
+  #    - -bin/python3.10
+  #    - -bin/pip
+  #    - -bin/pip3
+  #    - -bin/pip3.10
+  #    - -pyvenv.cfg
   ffmpeg:
     after: [ yt-dlp ]
     # WORKAROUND:
@@ -90,7 +90,7 @@ parts:
       - libvorbis-dev
     stage-packages:
       - libmp3lame0
-    stage:
+    prime:
       - -usr/include
   tube-converter:
     after: [ ffmpeg, yt-dlp ]
@@ -106,6 +106,8 @@ parts:
       - blueprint-compiler
       - just
       - dotnet-sdk-7.0
+    stage-packages:
+      - aria2
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
@@ -116,7 +118,11 @@ parts:
       just install /root/prime
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" $CRAFT_PRIME/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" $CRAFT_PRIME/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
+      pip install --target=$CRAFT_PART_INSTALL/gnome-platform/usr/lib/python3/dist-packages yt-dlp
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
+    prime:
+      - -gnome-platform/*
+      - -usr/*
 
 slots:
   # for GtkApplication registration
