@@ -35,36 +35,36 @@ package-repositories:
     key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
     url: https://proget.makedeb.org
 parts:
-  #yt-dlp:
-  #  # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
-  #  plugin: python
-  #  source: https://github.com/yt-dlp/yt-dlp.git
-  #  source-tag: 2023.03.04
-  #  python-packages:
-  #    - pyxattr==0.7.2
-  #    - PyGObject
-  #  build-environment:
-  #    # WORKAROUND: The python plugin is broken with gnome extension
-  #    - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
-  #    - PYTHONPATH: ""
-  #  override-pull: |
-  #    craftctl default
-  #    sed -i 's/^certifi\b/#\0/' requirements.txt
-  #  stage:
-  #    # WORKAROUND: Skip venv from python plugin
-  #    - -bin/activate
-  #    - -bin/activate.csh
-  #    - -bin/activate.fish
-  #    - -bin/Activate.ps1
-  #    - -bin/python
-  #    - -bin/python3
-  #    - -bin/python3.10
-  #    - -bin/pip
-  #    - -bin/pip3
-  #    - -bin/pip3.10
-  #    - -pyvenv.cfg
+  yt-dlp:
+    # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
+    plugin: python
+    source: https://github.com/yt-dlp/yt-dlp.git
+    source-tag: 2023.03.04
+    python-packages:
+      - pyxattr==0.7.2
+      - PyGObject
+    build-environment:
+      # WORKAROUND: The python plugin is broken with gnome extension
+      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
+      - PYTHONPATH: ""
+    override-pull: |
+      craftctl default
+      sed -i 's/^certifi\b/#\0/' requirements.txt
+    stage:
+      # WORKAROUND: Skip venv from python plugin
+      - -bin/activate
+      - -bin/activate.csh
+      - -bin/activate.fish
+      - -bin/Activate.ps1
+      - -bin/python
+      - -bin/python3
+      - -bin/python3.10
+      - -bin/pip
+      - -bin/pip3
+      - -bin/pip3.10
+      - -pyvenv.cfg
   ffmpeg:
-#    after: [ yt-dlp ]
+    after: [ yt-dlp ]
     # WORKAROUND:
     # Build from source because the ffmpeg package installs libraries as dependencies
     # that conflict with the Gnome extension
@@ -94,8 +94,8 @@ parts:
     prime:
       - -usr/include
   tube-converter:
-#    after: [ ffmpeg, yt-dlp ]
-    after: [ffmpeg]
+    after: [ ffmpeg, yt-dlp ]
+#    after: [ffmpeg]
     plugin: dump
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
