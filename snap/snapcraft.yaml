@@ -14,14 +14,14 @@ compression: lzo
 architectures:
   - amd64
 environment:
-  PYTHONPATH: ${SNAP}/lib/python3.10/site-packages
+  PYTHONPATH: ${SNAP}/usr/lib/python3/dist-packages
 layout:
   /usr/lib/org.nickvision.tubeconverter:
     symlink: $SNAP/usr/lib/org.nickvision.tubeconverter
   /usr/share/org.nickvision.tubeconverter:
     symlink: $SNAP/usr/share/org.nickvision.tubeconverter
-  /usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0:
-    bind-file: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
+#  /usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0:
+#    bind-file: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
 
 package-repositories:
   - type: apt
@@ -35,34 +35,34 @@ package-repositories:
     key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
     url: https://proget.makedeb.org
 parts:
-  yt-dlp:
+#  yt-dlp:
     # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
-    plugin: python
-    source: https://github.com/yt-dlp/yt-dlp.git
-    source-tag: 2023.03.04
-    python-packages:
-      - pyxattr==0.7.2
-      - PyGObject
-    build-environment:
-      # WORKAROUND: The python plugin is broken with gnome extension
-      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
-      - PYTHONPATH: ""
-    override-pull: |
-      craftctl default
-      sed -i 's/^certifi\b/#\0/' requirements.txt
-    stage:
-      # WORKAROUND: Skip venv from python plugin
-      - -bin/activate
-      - -bin/activate.csh
-      - -bin/activate.fish
-      - -bin/Activate.ps1
-      - -bin/python
-      - -bin/python3
-      - -bin/python3.10
-      - -bin/pip
-      - -bin/pip3
-      - -bin/pip3.10
-      - -pyvenv.cfg
+#    plugin: python
+#    source: https://github.com/yt-dlp/yt-dlp.git
+#    source-tag: 2023.03.04
+#    python-packages:
+#      - pyxattr==0.7.2
+#      - PyGObject
+#    build-environment:
+#      # WORKAROUND: The python plugin is broken with gnome extension
+#      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
+#      - PYTHONPATH: ""
+#    override-pull: |
+#      craftctl default
+#      sed -i 's/^certifi\b/#\0/' requirements.txt
+#    stage:
+#      # WORKAROUND: Skip venv from python plugin
+#      - -bin/activate
+#      - -bin/activate.csh
+#      - -bin/activate.fish
+#      - -bin/Activate.ps1
+#      - -bin/python
+#      - -bin/python3
+#      - -bin/python3.10
+#      - -bin/pip
+#      - -bin/pip3
+#      - -bin/pip3.10
+#      - -pyvenv.cfg
   ffmpeg:
     after: [ yt-dlp ]
     # WORKAROUND:
@@ -92,17 +92,17 @@ parts:
     stage-packages:
       - libmp3lame0
     prime:
-      - -usr/include
+      - usr/include
   tube-converter:
-    after: [ ffmpeg, yt-dlp ]
-#    after: [ffmpeg]
+#    after: [ ffmpeg, yt-dlp ]
+    after: [ffmpeg]
     plugin: dump
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
     source-tag: snap-$SNAPCRAFT_PROJECT_VERSION
     source-subdir: NickvisionTubeConverter.GNOME
     build-environment:
-      - TC_PYTHON_SO: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
+      - TC_PYTHON_SO: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
     build-packages:
       - brotli
       - blueprint-compiler
@@ -110,6 +110,8 @@ parts:
       - dotnet-sdk-7.0
     stage-packages:
       - aria2
+      - python3
+      - libpython3.10
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
@@ -140,7 +142,7 @@ apps:
     common-id: org.nickvision.tubeconverter
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
     environment:
-      TC_PYTHON_SO: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
+      TC_PYTHON_SO: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
     plugs:
       - network
       - network-status
