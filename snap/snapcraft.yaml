@@ -123,7 +123,6 @@ parts:
       pip install --target=$CRAFT_PART_INSTALL/usr/lib/python3/dist-packages yt-dlp
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
     prime:
-      - gnome-platform/*
       - usr/*
 
 slots:
