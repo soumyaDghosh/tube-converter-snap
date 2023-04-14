@@ -1,6 +1,8 @@
 name: 🧪 Test snap can be built on x86_64
 
 on:
+  push:
+    branches: [ytdlp]
   pull_request:
     branches: [ main ]
 
