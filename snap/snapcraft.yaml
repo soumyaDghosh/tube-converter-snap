@@ -19,10 +19,9 @@ layout:
     symlink: $SNAP/usr/lib/org.nickvision.tubeconverter
   /usr/share/org.nickvision.tubeconverter:
     symlink: $SNAP/usr/share/org.nickvision.tubeconverter
+  /usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0:
+    bind-file: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
 
-environment:
-  # WORKAROUND: Add python modules in Snap to search path
-  PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
 package-repositories:
   - type: apt
     url: https://packages.microsoft.com/ubuntu/22.04/prod
@@ -35,26 +34,7 @@ package-repositories:
     key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
     url: https://proget.makedeb.org
 parts:
-  libadwaita:
-    source: https://gitlab.gnome.org/GNOME/libadwaita.git
-    source-tag: '1.2.3'
-    plugin: meson
-    meson-parameters:
-      - --prefix=/usr
-      - -Doptimization=3
-      - -Ddebug=true
-      - -Dintrospection=enabled
-      - -Dvapi=true
-      - -Dtests=false
-      - -Dexamples=false
-    build-packages:
-      - sassc
-    override-pull: |
-      craftctl default
-      sed -e 's/-W\(format-nonliteral\)\b/-Wno-\1/g' -i meson.build
-      patch -p1 < $CRAFT_PROJECT_DIR/patches/style-manager-Support-Yaru-accent-colors.patch
   yt-dlp:
-    after: [libadwaita]
     # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
     plugin: python
     source: https://github.com/yt-dlp/yt-dlp.git
@@ -83,7 +63,7 @@ parts:
       - -bin/pip3.10
       - -pyvenv.cfg
   ffmpeg:
-    after: [ yt-dlp, libadwaita ]
+    after: [ yt-dlp ]
     # WORKAROUND:
     # Build from source because the ffmpeg package installs libraries as dependencies
     # that conflict with the Gnome extension
@@ -113,22 +93,19 @@ parts:
     stage:
       - -usr/include
   tube-converter:
-    after: [ ffmpeg, yt-dlp, libadwaita ]
+    after: [ ffmpeg, yt-dlp ]
     plugin: dump
     source: https://github.com/nlogozzo/NickvisionTubeConverter.git
     source-type: git
     source-tag: snap-$SNAPCRAFT_PROJECT_VERSION
     source-subdir: NickvisionTubeConverter.GNOME
     build-environment:
-      - TC_PYTHON_SO: "/snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0"
+      - TC_PYTHON_SO: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
     build-packages:
       - brotli
       - blueprint-compiler
       - just
       - dotnet-sdk-7.0
-    stage-packages:
-      - python3
-      - libpython3.10
     override-pull: |
       craftctl default
       sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
@@ -154,10 +131,9 @@ apps:
     extensions:
       - gnome
     common-id: org.nickvision.tubeconverter
-    environment:
-      TC_PYTHON_SO: /snap/tube-converter/current/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0
-#      GNOTIFICATION_BACKEND: freedesktop #This is to fix notifications
     desktop: usr/share/applications/org.nickvision.tubeconverter.desktop
+    environment:
+      TC_PYTHON_SO: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
     plugs:
       - network
       - network-status
