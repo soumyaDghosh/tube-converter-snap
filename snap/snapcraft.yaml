@@ -108,6 +108,7 @@ parts:
       - blueprint-compiler
       - just
       - dotnet-sdk-7.0
+      - python3-pip
     stage-packages:
       - aria2
       - python3
