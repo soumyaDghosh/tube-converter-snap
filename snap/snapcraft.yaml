@@ -13,7 +13,8 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo
 architectures:
   - amd64
-
+environment:
+  PYTHONPATH: ${SNAP}/usr/lib/python3/dist-packages
 layout:
   /usr/lib/org.nickvision.tubeconverter:
     symlink: $SNAP/usr/lib/org.nickvision.tubeconverter
@@ -119,11 +120,11 @@ parts:
       just install /root/prime
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" $CRAFT_PRIME/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" $CRAFT_PRIME/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
-      pip install --target=$CRAFT_PART_INSTALL/gnome-platform/usr/lib/python3/dist-packages yt-dlp
+      pip install --target=$CRAFT_PART_INSTALL/usr/lib/python3/dist-packages yt-dlp
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
     prime:
-      - -gnome-platform/*
-      - -usr/*
+      - gnome-platform/*
+      - usr/*
 
 slots:
   # for GtkApplication registration
