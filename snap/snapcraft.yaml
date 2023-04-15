@@ -141,3 +141,4 @@ apps:
       - network
       - network-status
       - removable-media
+      - mount-observe
