@@ -2,6 +2,7 @@ name: tube-converter # you probably want to 'snapcraft register <name>'
 base: core22 # the base snap is the execution environment for this snap
 version: '2023.4.2-beta1' # just for humans, typically '1.2+git' or '1.3.2'
 adopt-info: tube-converter
+icon: org.nickvision.tubeconverter.png
 summary: An easy-to-use YouTube video downloader # 79 char long summary
 description: |
  * A basic yt-dlp frontend
@@ -13,6 +14,8 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 compression: lzo
 architectures:
   - amd64
+  - arm64
+  - armhf
 
 layout:
   /usr/lib/org.nickvision.tubeconverter:
@@ -22,17 +25,6 @@ layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0:
     bind-file: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
 
-package-repositories:
-  - type: apt
-    url: https://packages.microsoft.com/ubuntu/22.04/prod
-    components: [main]
-    suites: [jammy]
-    key-id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
-  - type: apt
-    components: [jammy]
-    suites: [prebuilt-mpr]
-    key-id: B70EAE798718E0FE2972DD0C4FE9F2C43D9428A0
-    url: https://proget.makedeb.org
 parts:
   yt-dlp:
     # Missing optional dependencies atomicparsley, mpv, phantomjs and rtmpdump
@@ -90,8 +82,8 @@ parts:
       - libvorbis-dev
     stage-packages:
       - libmp3lame0
-    stage:
-      - -usr/include
+    prime:
+      - usr/include
   tube-converter:
     after: [ ffmpeg, yt-dlp ]
     plugin: dump
@@ -104,21 +96,28 @@ parts:
     build-packages:
       - brotli
       - blueprint-compiler
-      - just
-      - dotnet-sdk-7.0
+      - wget
+      - cargo
     stage-packages:
       - aria2
     override-pull: |
       craftctl default
-      sed -e 's|Icon=org.nickvision.tubeconverter|Icon=/usr/share/icons/hicolor/scalable/apps/org.nickvision.tubeconverter.svg|' -i NickvisionTubeConverter.GNOME/org.nickvision.tubeconverter.desktop
+      cargo install just
+      wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+      chmod +x ./dotnet-install.sh
+      ./dotnet-install.sh --channel 7.0
     override-prime: |
       craftctl default
-      cd ~/parts/tube-converter/src/NickvisionTubeConverter.GNOME
+      export DOTNET_ROOT=$HOME/.dotnet
+      export PATH=$PATH:$HOME/.dotnet:$HOME/.dotnet/tools:$HOME/.cargo/bin
+      cd $CRAFT_PART_SRC_WORK
       just publish-self-contained /usr
-      just install /root/prime
+      just install $CRAFT_PRIME
       sed -i "2 i export TC_PYTHON_SO=$TC_PYTHON_SO" $CRAFT_PRIME/usr/bin/org.nickvision.tubeconverter
       sed -i "s|Exec=/usr/bin/org.nickvision.tubeconverter --gapplication-service|Exec=/snap/tube-converter/current/usr/bin/org.nickvision.tubeconverter --gapplication-service|" $CRAFT_PRIME/usr/share/dbus-1/services/org.nickvision.tubeconverter.service
     parse-info: [usr/share/metainfo/org.nickvision.tubeconverter.metainfo.xml]
+    prime:
+      - usr/*
 
 slots:
   # for GtkApplication registration
