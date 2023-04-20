@@ -82,8 +82,8 @@ parts:
       - libvorbis-dev
     stage-packages:
       - libmp3lame0
-    stage:
-      - usr/include
+    #stage:
+    #  - usr/include
   tube-converter:
     after: [ ffmpeg, yt-dlp ]
     plugin: dump
