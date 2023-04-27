@@ -137,8 +137,8 @@ apps:
       TC_PYTHON_SO: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET/libpython3.10.so.1.0
       PYTHONPATH: $SNAP/lib/python3.10/site-packages:$PYTHONPATH
     plugs:
-      - home
-      - removable-media
+      #- home
+      #- removable-media
       - network
       - network-status
       - removable-media
